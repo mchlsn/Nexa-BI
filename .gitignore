@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Node / React
+node_modules/
+dist/
+build/
+.env.local
+
+# Data - jangan upload dataset besar
+data/raw/*.csv
+data/raw/*.xlsx
+data/processed/*.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
