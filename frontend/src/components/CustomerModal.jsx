@@ -96,7 +96,7 @@ export default function CustomerModal({ mode, customer, onClose, onSuccess }) {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   { id: 'modal-customer-id', key: 'customer_id', label: 'Customer ID', disabled: isEdit },
                   { id: 'modal-customer-name', key: 'customer_name', label: 'Nama Customer' },
@@ -114,7 +114,7 @@ export default function CustomerModal({ mode, customer, onClose, onSuccess }) {
                       onChange={(e) => setForm({ ...form, [key]: e.target.value })}
                       disabled={disabled}
                       required
-                      className="w-full px-3 py-2.5 rounded-xl text-sm text-white outline-none transition-all"
+                      className="w-full px-3 py-3 rounded-xl text-sm text-white outline-none transition-all focus:ring-2 focus:ring-accent"
                       style={{
                         background: '#0f1117',
                         border: '1px solid #2a2d3a',
@@ -132,7 +132,7 @@ export default function CustomerModal({ mode, customer, onClose, onSuccess }) {
                   id="modal-cluster"
                   value={form.cluster}
                   onChange={(e) => setForm({ ...form, cluster: parseInt(e.target.value) })}
-                  className="w-full px-3 py-2.5 rounded-xl text-sm text-white outline-none"
+                  className="w-full px-3 py-3 rounded-xl text-sm text-white outline-none"
                   style={{ background: '#0f1117', border: '1px solid #2a2d3a' }}>
                   <option value={1}>Cluster 1 — Pelanggan Pasif</option>
                   <option value={2}>Cluster 2 — Pelanggan Loyal</option>
@@ -143,14 +143,14 @@ export default function CustomerModal({ mode, customer, onClose, onSuccess }) {
                 <p className="text-red-400 text-sm px-1">{error}</p>
               )}
 
-              <div className="flex gap-3 pt-1">
+              <div className="flex flex-col sm:flex-row gap-3 pt-1">
                 <button type="button" onClick={onClose}
-                  className="flex-1 py-2.5 rounded-xl text-sm font-medium text-muted hover:text-white transition-all"
+                  className="flex-1 py-3 rounded-xl text-sm font-medium text-muted hover:text-white transition-all min-h-[44px]"
                   style={{ border: '1px solid #2a2d3a', background: '#13161f' }}>
                   Batal
                 </button>
                 <button type="submit" disabled={loading}
-                  className="flex-1 py-2.5 rounded-xl text-sm font-medium text-white flex items-center justify-center gap-2 disabled:opacity-60"
+                  className="flex-1 py-3 rounded-xl text-sm font-medium text-white flex items-center justify-center gap-2 disabled:opacity-60 min-h-[44px]"
                   style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
                   {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Menyimpan...</> : isEdit ? 'Simpan Perubahan' : 'Tambah Customer'}
                 </button>

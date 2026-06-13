@@ -105,7 +105,7 @@ export default function SalesPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <StatBox
           icon={DollarSign} title="Total Revenue"
           value={summary ? `$${fmtShort(summary.total_revenue)}` : '—'}
@@ -251,45 +251,54 @@ export default function SalesPage() {
                 const cumulative = segRevenue.slice(0, i + 1).reduce((acc, x) => acc + x.total_revenue, 0);
                 const cumulativePct = totalRev > 0 ? (cumulative / totalRev * 100).toFixed(1) : 0;
                 return (
-                  <div key={s.segment} className="flex items-center gap-4">
-                    <div className="w-28 flex-shrink-0">
-                      <p className="text-white text-sm font-medium">{s.segment}</p>
-                      <p className="text-muted text-xs">{s.customer_count} pelanggan</p>
+                  <div key={s.segment} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 py-2 border-b sm:border-b-0 border-[#2a2d3a]/30">
+                    <div className="flex justify-between items-center sm:w-28 sm:flex-shrink-0">
+                      <div>
+                        <p className="text-white text-sm font-medium">{s.segment}</p>
+                        <p className="text-muted text-xs">{s.customer_count} pelanggan</p>
+                      </div>
+                      <span className="sm:hidden text-xs font-semibold" style={{ color: SEG_COLORS[i % SEG_COLORS.length] }}>{s.revenue_pct}%</span>
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs text-muted">${fmtShort(s.total_revenue)}</span>
-                        <span className="text-xs font-semibold" style={{ color: SEG_COLORS[i % SEG_COLORS.length] }}>{s.revenue_pct}%</span>
+                        <span className="hidden sm:inline text-xs font-semibold" style={{ color: SEG_COLORS[i % SEG_COLORS.length] }}>{s.revenue_pct}%</span>
                       </div>
                       <div className="h-3 rounded-full" style={{ background: '#2a2d3a' }}>
                         <div className="h-3 rounded-full transition-all"
                           style={{ width: `${s.revenue_pct}%`, background: SEG_COLORS[i % SEG_COLORS.length] }} />
                       </div>
                     </div>
-                    <div className="w-24 flex-shrink-0 text-right">
-                      <p className="text-xs text-muted">Kumulatif</p>
-                      <p className="text-sm font-bold text-white">{cumulativePct}%</p>
-                    </div>
-                    <div className="w-20 flex-shrink-0 text-right">
-                      <p className="text-xs text-muted">Avg Order</p>
-                      <p className="text-sm font-semibold text-white">${fmtShort(s.avg_order_value)}</p>
+                    <div className="flex justify-between items-center gap-4 sm:w-auto mt-1 sm:mt-0">
+                      <div className="sm:w-24 sm:flex-shrink-0 text-left sm:text-right">
+                        <span className="inline sm:hidden text-xs text-muted">Kumulatif: </span>
+                        <span className="text-sm font-bold text-white">{cumulativePct}%</span>
+                      </div>
+                      <div className="sm:w-20 sm:flex-shrink-0 text-right">
+                        <span className="inline sm:hidden text-xs text-muted">Avg Order: </span>
+                        <span className="text-sm font-semibold text-white">${fmtShort(s.avg_order_value)}</span>
+                      </div>
                     </div>
                   </div>
                 );
               })}
               <div className="pt-3 border-t mt-2" style={{ borderColor: '#2a2d3a' }}>
-                <div className="flex items-center gap-4">
-                  <div className="w-28 flex-shrink-0">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                  <div className="sm:w-28 sm:flex-shrink-0">
                     <p className="text-white text-sm font-bold">Total</p>
                   </div>
                   <div className="flex-1">
                     <div className="h-3 rounded-full" style={{ background: 'linear-gradient(90deg, #6366f1, #10b981, #f59e0b)' }} />
                   </div>
-                  <div className="w-24 flex-shrink-0 text-right">
-                    <p className="text-sm font-bold text-white">100%</p>
-                  </div>
-                  <div className="w-20 flex-shrink-0 text-right">
-                    <p className="text-sm font-bold" style={{ color: '#818cf8' }}>${fmtShort(segRevenue.reduce((a, s) => a + s.total_revenue, 0))}</p>
+                  <div className="flex justify-between items-center mt-1 sm:mt-0">
+                    <div className="sm:w-24 sm:flex-shrink-0 text-left sm:text-right">
+                      <span className="inline sm:hidden text-xs text-muted">Kumulatif: </span>
+                      <span className="text-sm font-bold text-white">100%</span>
+                    </div>
+                    <div className="sm:w-20 sm:flex-shrink-0 text-right">
+                      <span className="inline sm:hidden text-xs text-muted">Total Rev: </span>
+                      <span className="text-sm font-bold" style={{ color: '#818cf8' }}>${fmtShort(segRevenue.reduce((a, s) => a + s.total_revenue, 0))}</span>
+                    </div>
                   </div>
                 </div>
               </div>

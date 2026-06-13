@@ -36,14 +36,15 @@ export default function TopCustomersPage() {
 
       {/* Podium Top 3 */}
       {!loading && customers.length >= 3 && (
-        <div className="grid grid-cols-3 gap-4 mb-2">
-          {[1, 0, 2].map((idx) => {
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+          {[0, 1, 2].map((idx) => {
             const c = customers[idx];
             const rank = idx + 1;
             const medalColor = { 1: '#f59e0b', 2: '#94a3b8', 3: '#cd7f32' }[rank];
-            const heights = { 1: 'pt-8', 2: 'pt-14', 3: 'pt-16' };
+            const heights = { 1: 'md:pt-8 pt-5', 2: 'md:pt-14 pt-5', 3: 'md:pt-16 pt-5' };
+            const orderClasses = { 1: 'order-1 md:order-2', 2: 'order-2 md:order-1', 3: 'order-3 md:order-3' }[rank];
             return (
-              <div key={c.customer_id} className={`rounded-2xl border p-5 text-center ${heights[rank]}`}
+              <div key={c.customer_id} className={`rounded-2xl border p-5 text-center ${heights[rank]} ${orderClasses}`}
                 style={{
                   background: rank === 1 ? 'linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.05))' : '#1a1d27',
                   borderColor: rank === 1 ? 'rgba(245,158,11,0.4)' : '#2a2d3a',

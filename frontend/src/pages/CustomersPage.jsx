@@ -183,16 +183,16 @@ export default function CustomersPage() {
 
         {/* Pagination */}
         {!loading && totalPages > 1 && (
-          <div className="flex items-center justify-between px-5 py-3.5 border-t"
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5 border-t"
             style={{ borderColor: '#2a2d3a', background: '#13161f' }}>
-            <p className="text-muted text-xs">
+            <p className="text-muted text-xs sm:text-sm">
               Halaman {page} dari {totalPages} · {filtered.length} total
             </p>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-1.5 rounded-lg text-muted hover:text-white transition-all disabled:opacity-30"
+                className="p-2 rounded-lg text-muted hover:text-white transition-all disabled:opacity-30 min-w-[36px] min-h-[36px] flex items-center justify-center"
                 style={{ border: '1px solid #2a2d3a' }}>
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -202,7 +202,7 @@ export default function CustomersPage() {
                 return (
                   <button key={pg}
                     onClick={() => setPage(pg)}
-                    className="w-8 h-8 rounded-lg text-xs font-medium transition-all"
+                    className="w-9 h-9 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center justify-center"
                     style={pg === page
                       ? { background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: 'white' }
                       : { color: '#94a3b8', border: '1px solid #2a2d3a' }
@@ -214,7 +214,7 @@ export default function CustomersPage() {
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-1.5 rounded-lg text-muted hover:text-white transition-all disabled:opacity-30"
+                className="p-2 rounded-lg text-muted hover:text-white transition-all disabled:opacity-30 min-w-[36px] min-h-[36px] flex items-center justify-center"
                 style={{ border: '1px solid #2a2d3a' }}>
                 <ChevronRight className="w-4 h-4" />
               </button>

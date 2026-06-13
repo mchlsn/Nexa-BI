@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Users, BrainCircuit, LogOut, BarChart3,
-  ChevronRight, TrendingUp, Crown, AlertTriangle, PackageOpen, DollarSign
+  ChevronRight, TrendingUp, Crown, AlertTriangle, PackageOpen, DollarSign, X
 } from 'lucide-react';
 
 const navItems = [
@@ -14,35 +14,50 @@ const navItems = [
   { to: '/dashboard/customers', icon: Users, label: 'Customers' },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isDrawer = false, onCloseDrawer, onOpenChat }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('nexabi_token');
     navigate('/login', { replace: true });
+    if (onCloseDrawer) onCloseDrawer();
   };
 
   return (
-    <aside className="flex flex-col w-60 flex-shrink-0 border-r"
-      style={{ background: '#13161f', borderColor: '#2a2d3a', minHeight: '100vh' }}>
+    <aside className="flex flex-col w-full lg:w-60 flex-shrink-0 border-r"
+      style={{ background: '#13161f', borderColor: '#2a2d3a', minHeight: isDrawer ? '100%' : '100vh' }}>
 
       {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-6 border-b" style={{ borderColor: '#2a2d3a' }}>
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
-          <BarChart3 className="w-5 h-5 text-white" />
+      <div className="flex items-center justify-between px-5 py-6 border-b" style={{ borderColor: '#2a2d3a' }}>
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
+            <BarChart3 className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <p className="text-white font-bold text-base leading-tight">NexaBI</p>
+            <p className="text-muted text-xs">Analytics Platform</p>
+          </div>
         </div>
-        <div>
-          <p className="text-white font-bold text-base leading-tight">NexaBI</p>
-          <p className="text-muted text-xs">Analytics Platform</p>
-        </div>
+        {isDrawer && (
+          <button
+            onClick={onCloseDrawer}
+            className="p-1 rounded-lg text-muted hover:text-white hover:bg-white/5 transition-colors lg:hidden"
+            aria-label="Close menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         <p className="text-muted text-xs font-semibold uppercase tracking-wider px-2 mb-3">Menu Utama</p>
         {navItems.map(({ to, icon: Icon, label, end }) => (
           <NavLink key={to} to={to} end={end}
+            onClick={() => {
+              if (onCloseDrawer) onCloseDrawer();
+            }}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 isActive ? 'text-white' : 'text-muted hover:text-white hover:bg-white/5'
@@ -64,22 +79,28 @@ export default function Sidebar() {
           </NavLink>
         ))}
 
-        {/* AI Advisor label */}
-        <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted mt-1">
-          <BrainCircuit style={{ width: '18px', height: '18px' }} />
+        {/* AI Advisor Button */}
+        <button
+          onClick={() => {
+            if (onOpenChat) onOpenChat();
+            if (onCloseDrawer) onCloseDrawer();
+          }}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted hover:text-white hover:bg-white/5 transition-all text-left mt-1"
+        >
+          <BrainCircuit style={{ width: '18px', height: '18px', flexShrink: 0 }} />
           <span className="flex-1">AI Advisor</span>
           <span className="text-xs px-1.5 py-0.5 rounded-md"
             style={{ background: 'rgba(99,102,241,0.15)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.3)' }}>
             Live
           </span>
-        </div>
+        </button>
       </nav>
 
       {/* Footer Logout */}
       <div className="px-3 py-4 border-t" style={{ borderColor: '#2a2d3a' }}>
         <button id="sidebar-logout" onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted hover:text-red-400 hover:bg-red-500/10 transition-all">
-          <LogOut style={{ width: '18px', height: '18px' }} />
+          <LogOut style={{ width: '18px', height: '18px', flexShrink: 0 }} />
           Keluar
         </button>
       </div>

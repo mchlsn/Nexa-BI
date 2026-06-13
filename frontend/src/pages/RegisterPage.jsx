@@ -52,25 +52,63 @@ export default function RegisterPage() {
         style={{ background: 'radial-gradient(circle, #8b5cf6, transparent)' }} />
 
       {/* Register Card */}
-      <div className="relative z-10 w-full max-w-md mx-4 animate-fade-in">
-        {/* Header branding */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4"
-            style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
-            <BarChart3 className="w-8 h-8 text-white" />
+      <div className="relative z-10 w-full max-w-md lg:max-w-4xl mx-4 bg-[#1a1d27]/90 border border-[#2a2d3a] rounded-3xl overflow-hidden backdrop-blur-xl animate-fade-in lg:grid lg:grid-cols-2 shadow-2xl">
+        {/* Left Column (Illustration/Branding) - Desktop only */}
+        <div className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-indigo-500/10 to-violet-500/10 border-r border-[#2a2d3a]">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
+              <BarChart3 className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-2xl font-bold text-white tracking-tight">NexaBI</span>
           </div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">NexaBI</h1>
-          <p className="text-muted mt-1 text-sm">Buat akun untuk mengakses platform</p>
+
+          <div className="space-y-6 my-auto">
+            <h2 className="text-3xl font-extrabold text-white leading-tight">
+              Mulai Analisis Bisnis Anda Sekarang.
+            </h2>
+            <p className="text-muted text-sm leading-relaxed">
+              Buat akun dalam hitungan detik untuk mengakses data analytics dashboard lengkap, monitoring churn, segmentasi RFM, dan wawasan AI.
+            </p>
+            <div className="space-y-4">
+              {[
+                'Akses aman dengan enkripsi modern.',
+                'Visualisasi data instan di perangkat Anda.',
+                'AI Recommendation Engine siap pakai.',
+              ].map((f, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-emerald-400 bg-emerald-500/10">✓</span>
+                  <span className="text-gray-300 text-sm">{f}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="text-muted text-xs">
+            NexaBI Analytics Platform © 2026
+          </p>
         </div>
 
-        {/* Form card */}
-        <div className="rounded-2xl p-8 border"
-          style={{ background: 'rgba(26,29,39,0.8)', borderColor: '#2a2d3a', backdropFilter: 'blur(20px)' }}>
-          <h2 className="text-xl font-semibold text-white mb-6">Daftar Akun Baru</h2>
+        {/* Right Column (Form) */}
+        <div className="p-6 sm:p-10 flex flex-col justify-center">
+          {/* Header branding (only visible on mobile/tablet) */}
+          <div className="text-center mb-6 lg:hidden">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-3"
+              style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
+              <BarChart3 className="w-7 h-7 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-white tracking-tight">NexaBI</h1>
+            <p className="text-muted mt-1 text-xs">Buat akun untuk mengakses platform</p>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-white">Daftar Akun Baru</h2>
+            <p className="text-muted text-sm mt-1">Lengkapi form di bawah ini</p>
+          </div>
 
           {success ? (
             <div className="text-center py-6">
-              <CheckCircle2 className="w-16 h-16 text-emerald-400 mx-auto mb-4" />
+              <CheckCircle2 className="w-16 h-16 text-emerald-400 mx-auto mb-4 animate-bounce" />
               <h3 className="text-lg font-medium text-white mb-2">Registrasi Berhasil!</h3>
               <p className="text-sm text-muted">Mengarahkan ke halaman login...</p>
             </div>
@@ -86,11 +124,10 @@ export default function RegisterPage() {
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Pilih username"
                   required
-                  className="w-full px-4 py-3 rounded-xl text-white placeholder-muted text-sm outline-none transition-all focus:ring-2"
+                  className="w-full px-4 py-3 rounded-xl text-white placeholder-muted text-sm outline-none transition-all focus:ring-2 focus:ring-accent"
                   style={{
                     background: '#0f1117',
                     border: '1px solid #2a2d3a',
-                    '--tw-ring-color': '#6366f1',
                   }}
                 />
               </div>
@@ -107,11 +144,10 @@ export default function RegisterPage() {
                     placeholder="Buat password (min. 6 karakter)"
                     required
                     minLength={6}
-                    className="w-full px-4 py-3 pr-12 rounded-xl text-white placeholder-muted text-sm outline-none transition-all focus:ring-2"
+                    className="w-full px-4 py-3 pr-12 rounded-xl text-white placeholder-muted text-sm outline-none transition-all focus:ring-2 focus:ring-accent"
                     style={{
                       background: '#0f1117',
                       border: '1px solid #2a2d3a',
-                      '--tw-ring-color': '#6366f1',
                     }}
                   />
                   <button
@@ -138,7 +174,7 @@ export default function RegisterPage() {
                 id="register-submit"
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 rounded-xl font-semibold text-white text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+                className="w-full py-3.5 rounded-xl font-semibold text-white text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60 min-h-[44px]"
                 style={{ background: loading ? '#4f46e5' : 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
               >
                 {loading ? (
@@ -157,11 +193,12 @@ export default function RegisterPage() {
               </div>
             </form>
           )}
-        </div>
 
-        <p className="text-center text-muted text-xs mt-6">
-          NexaBI © 2026 · Powered by Gemini AI
-        </p>
+          {/* Footer branding (only visible on mobile/tablet) */}
+          <p className="text-center text-muted text-xs mt-6 lg:hidden">
+            NexaBI © 2026 · Powered by Gemini AI
+          </p>
+        </div>
       </div>
     </div>
   );
