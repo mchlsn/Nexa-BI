@@ -5,12 +5,15 @@ Platform analitik bisnis berbasis AI untuk customer analytics dan product recomm
 **Capstone Project — PJK-GM040 | Pijak × IBM SkillsBuild**  
 Tema: *AI for Business Intelligence and Market Insights*
 
+**Repository:** https://github.com/mchlsn/Nexa-BI
+
 ---
 
 ## Fitur Utama
 
 | Halaman | Deskripsi |
 |---|---|
+| **Login / Register** | Autentikasi user dengan JWT |
 | **Overview** | KPI ringkasan, distribusi cluster Loyal/Pasif, AI Smart Advisor |
 | **Sales Performance** | Revenue per segment, distribusi monetary, recency, pareto kontribusi, AI Sales Forecast |
 | **Analytics** | RFM Scatter Plot, distribusi segment, % loyal, tabel detail RFM |
@@ -18,7 +21,8 @@ Tema: *AI for Business Intelligence and Market Insights*
 | **Top Customers** | Podium top 3 + ranked table 10 pelanggan tertinggi |
 | **Churn Risk** | Monitor pelanggan berisiko churn + AI strategi retensi |
 | **Customers** | CRUD lengkap, search, pagination, export CSV |
-| **AI Chatbot** | Floating chatbot kontekstual di semua halaman dashboard |
+
+Selain 8 halaman di atas, tersedia juga **AI Chatbot** — floating widget kontekstual yang muncul di semua halaman dashboard untuk tanya-jawab seputar data bisnis.
 
 ---
 
@@ -28,32 +32,46 @@ Tema: *AI for Business Intelligence and Market Insights*
 .
 ├── backend/
 │   ├── app/
-│   │   ├── ai_helper.py       # OpenAI-compatible AI client
-│   │   ├── ai_routes.py       # Endpoint AI: insight, chat, forecast
-│   │   ├── analytics_routes.py # Endpoint analytics extended
-│   │   ├── auth.py
+│   │   ├── ai_helper.py        # OpenAI-compatible AI client
+│   │   ├── ai_routes.py        # Endpoint AI: insight, chat, forecast, churn
+│   │   ├── analytics_routes.py # Endpoint analytics (overview, RFM, basket, dll)
+│   │   ├── auth.py              # Register & login (JWT)
 │   │   ├── config.py
 │   │   ├── database.py
 │   │   ├── main.py
 │   │   ├── models.py
 │   │   ├── schemas.py
-│   │   └── seeder.py
-│   ├── df_kmeans.csv              # Data RFM hasil K-Means (1.590 pelanggan)
-│   ├── association_rules.csv      # 106 association rules hasil Apriori
+│   │   └── seeder.py            # Seeder otomatis dari df_kmeans.csv
+│   ├── df_kmeans.csv               # Data RFM hasil K-Means (1.590 pelanggan)
+│   ├── association_rules.csv       # 106 association rules hasil Apriori
 │   ├── Market Basket Analysis (Apriori).ipynb
 │   ├── docker-compose.yml
 │   ├── Dockerfile
+│   ├── nexabi-backend.service
 │   ├── requirements.txt
-│   └── .env
-└── frontend/
-    ├── src/
-    │   ├── pages/             # 9 halaman dashboard
-    │   ├── components/        # Sidebar, ChatbotWidget, dll
-    │   ├── layouts/
-    │   └── api/axios.js       # Axios + JWT interceptor
-    ├── package.json
-    └── vite.config.js
+│   └── .env.example
+├── frontend/
+│   ├── src/
+│   │   ├── pages/              # Halaman dashboard (Login, Overview, Sales, dll)
+│   │   ├── components/         # Sidebar, ChatbotWidget, CustomerModal, dll
+│   │   ├── layouts/             # DashboardLayout
+│   │   └── api/axios.js         # Axios + JWT interceptor
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   ├── package.json
+│   ├── tailwind.config.js
+│   └── vite.config.js
+└── ml/
+    ├── notebooks/
+    │   └── preprocess.ipynb     # EDA & preprocessing data Global Superstore
+    └── src/
+        ├── preprocessing/        # Load, clean, compute RFM
+        ├── clustering/            # K-Means customer segmentation
+        └── market_basket/         # Apriori association rules
 ```
+
+> Folder `ml/` berisi notebook dan kode eksplorasi yang menjadi dasar `df_kmeans.csv` dan `association_rules.csv` yang dipakai oleh `backend/`.
 
 ---
 
@@ -76,6 +94,7 @@ docker network create nexabi_shared_net
 
 ```bash
 cd backend
+cp .env.example .env   # sesuaikan DATABASE_URL, SECRET_KEY, dan API key AI
 docker compose up --build -d
 ```
 
@@ -100,9 +119,9 @@ Frontend tersedia di `http://localhost:3000`
 ```bash
 cd backend
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env   # sesuaikan DATABASE_URL dan SECRET_KEY
+cp .env.example .env                # sesuaikan DATABASE_URL dan SECRET_KEY
 uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
 ```
 
@@ -130,6 +149,8 @@ npm run dev
 | `OPENAI_API_KEY` | API key untuk AI service |
 | `OPENAI_MODEL` | Nama model yang digunakan |
 | `GEMINI_API_KEY` | (Opsional) Gemini API key |
+
+> Jangan pernah commit file `.env` — gunakan `.env.example` sebagai template.
 
 ---
 
